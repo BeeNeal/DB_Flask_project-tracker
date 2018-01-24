@@ -2,22 +2,26 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.10
+-- Dumped by pg_dump version 9.5.10
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -30,122 +34,126 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: grades; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: grades; Type: TABLE; Schema: public; Owner: user
 --
 
 CREATE TABLE grades (
-	id integer NOT NULL,
-	student_github character varying(30),
-	project_title character varying(30),
-	grade integer
+    id integer NOT NULL,
+    student_github character varying(30),
+    project_title character varying(30),
+    grade integer
 );
 
 
+ALTER TABLE grades OWNER TO "user";
+
 --
--- Name: grades_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: grades_id_seq; Type: SEQUENCE; Schema: public; Owner: user
 --
 
 CREATE SEQUENCE grades_id_seq
-	START WITH 1
-	INCREMENT BY 1
-	NO MINVALUE
-	NO MAXVALUE
-	CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
+
+ALTER TABLE grades_id_seq OWNER TO "user";
 
 --
--- Name: grades_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: grades_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
 --
 
 ALTER SEQUENCE grades_id_seq OWNED BY grades.id;
 
 
 --
--- Name: projects; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: projects; Type: TABLE; Schema: public; Owner: user
 --
 
 CREATE TABLE projects (
-	id integer NOT NULL,
-	title character varying(30),
-	description text,
-	max_grade integer
+    id integer NOT NULL,
+    title character varying(30),
+    description text,
+    max_grade integer
 );
 
 
+ALTER TABLE projects OWNER TO "user";
+
 --
--- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: projects_id_seq; Type: SEQUENCE; Schema: public; Owner: user
 --
 
 CREATE SEQUENCE projects_id_seq
-	START WITH 1
-	INCREMENT BY 1
-	NO MINVALUE
-	NO MAXVALUE
-	CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
+
+ALTER TABLE projects_id_seq OWNER TO "user";
 
 --
--- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: projects_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
 --
 
 ALTER SEQUENCE projects_id_seq OWNED BY projects.id;
 
 
 --
--- Name: students; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: students; Type: TABLE; Schema: public; Owner: user
 --
 
 CREATE TABLE students (
-	id integer NOT NULL,
-	first_name character varying(30),
-	last_name character varying(30),
-	github character varying(30)
+    id integer DEFAULT nextval('projects_id_seq'::regclass) NOT NULL,
+    first_name character varying(30),
+    last_name character varying(30),
+    github character varying(30)
 );
 
 
+ALTER TABLE students OWNER TO "user";
+
 --
--- Name: students_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: students_id_seq; Type: SEQUENCE; Schema: public; Owner: user
 --
 
 CREATE SEQUENCE students_id_seq
-	START WITH 1
-	INCREMENT BY 1
-	NO MINVALUE
-	NO MAXVALUE
-	CACHE 1;
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
+
+ALTER TABLE students_id_seq OWNER TO "user";
 
 --
--- Name: students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: students_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: user
 --
 
 ALTER SEQUENCE students_id_seq OWNED BY students.id;
 
 
-
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: user
 --
 
 ALTER TABLE ONLY grades ALTER COLUMN id SET DEFAULT nextval('grades_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: id; Type: DEFAULT; Schema: public; Owner: user
 --
 
 ALTER TABLE ONLY projects ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY students ALTER COLUMN id SET DEFAULT nextval('projects_id_seq'::regclass);
-
-
---
--- Data for Name: grades; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: grades; Type: TABLE DATA; Schema: public; Owner: user
 --
 
 COPY grades (id, student_github, project_title, grade) FROM stdin;
@@ -157,14 +165,14 @@ COPY grades (id, student_github, project_title, grade) FROM stdin;
 
 
 --
--- Name: grades_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: grades_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
 SELECT pg_catalog.setval('grades_id_seq', 4, true);
 
 
 --
--- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: projects; Type: TABLE DATA; Schema: public; Owner: user
 --
 
 COPY projects (id, title, description, max_grade) FROM stdin;
@@ -174,50 +182,66 @@ COPY projects (id, title, description, max_grade) FROM stdin;
 
 
 --
--- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: projects_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
-SELECT pg_catalog.setval('projects_id_seq', 2, true);
+SELECT pg_catalog.setval('projects_id_seq', 16, true);
 
 
 --
--- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: students; Type: TABLE DATA; Schema: public; Owner: user
 --
 
 COPY students (id, first_name, last_name, github) FROM stdin;
 1	Jane	Hacker	jhacks
 2	Sarah	Developer	sdevelops
+3	test_first	test_last	test_git
+4	first_TEST	last	jfjes
+5	Test_ First	asasf	asdfsd
+6	Test_ First	asasf	asdfsd
+7	Harry	Potter	HPotter
+8	Ron	Weasley	RW
+9	Dobby	asd	Dobmeoister
+10	dfe	se	afe
+11	asdgsd	shhh	sssss
+12	asdgsd	shhh	sssss
+13	Happy	Student	Hstud
+14	jing	h	jhao
+15	Brit	Neal	BNeal
+16	sad	Gdfh	sgd
 \.
 
 
 --
--- Name: students_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: students_id_seq; Type: SEQUENCE SET; Schema: public; Owner: user
 --
 
 SELECT pg_catalog.setval('students_id_seq', 2, true);
 
 
 --
--- Name: grades_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: grades_pkey; Type: CONSTRAINT; Schema: public; Owner: user
 --
 
 ALTER TABLE ONLY grades
-	ADD CONSTRAINT grades_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT grades_pkey PRIMARY KEY (id);
 
 
 --
--- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: projects_pkey; Type: CONSTRAINT; Schema: public; Owner: user
 --
 
 ALTER TABLE ONLY projects
-	ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT projects_pkey PRIMARY KEY (id);
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: -
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
 --
 
 REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
 GRANT ALL ON SCHEMA public TO PUBLIC;
 
 

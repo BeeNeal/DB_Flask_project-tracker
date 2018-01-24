@@ -156,23 +156,30 @@ def get_grades_by_title(title):
 
     return rows
 
+def get_all_students():
+    """ Get a list of all students"""
 
-#Our unecessary function
-# def get_title_by_github(github):
-#     """get title by github"""
+    QUERY = """
+    SELECT first_name, last_name, github
+        FROM Students
+    """
 
-#     QUERY = """
-#         SELECT project_title
-#         FROM grades
-#         WHERE github = :github
-#         """
+    db_cursor = db.session.execute(QUERY)
+    rows = db_cursor.fetchall()
 
-#     db_cursor = db.session.execute(QUERY, {'github': github})
+    return rows
 
-#     row = db_cursor.fetchone()
+def get_all_projects():
+    """Get a list of all project titles"""
+    QUERY = """
+     SELECT DISTINCT title
+        FROM Projects
+    """
 
+    db_cursor = db.session.execute(QUERY)
+    rows = db_cursor.fetchall()
 
-
+    return rows
 
 def handle_input():
     """Main loop.
