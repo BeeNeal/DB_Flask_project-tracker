@@ -14,9 +14,12 @@ def get_student():
     github = request.args.get('github')
 
     first, last, github = hackbright.get_student_by_github(github)
+    grades_titles = hackbright.get_grades_by_github(github)
+
     html = render_template('student_info.html', first=first,
-                                            last=last,
-                                            github=github)
+                           last=last,
+                           github=github,
+                           grades_titles=grades_titles)
 
     return html
 
@@ -50,20 +53,22 @@ def student_add():
     return render_template('add_confirmation.html', github=github)
 
 
-@app.route('/project-selection')
-def display_project_selection():
-    """"display project title selection page"""
+# @app.route('/project-selection')
+# def display_project_selection():
+#     """"display project title selection page"""
 
-    return render_template('select_project.html')
+#     return render_template('select_project.html')
 
-@app.route('/project<project_title>')
+@app.route('/project')
 def display_project():
     """display project"""
 
-    project_title = request.args.get('')
-    title, description, max_grade = get_project_by_title(project_title)
+    project_title = request.args.get('project')
+    title, description, max_grade = hackbright.get_project_by_title(project_title)
 
-    return render_template('project_info.html')
+    return render_template('project_info.html', title=title,
+                           description=description,
+                           max_grade=max_grade)
 
 
 

@@ -70,7 +70,7 @@ def get_project_by_title(title):
 
     db_cursor = db.session.execute(QUERY, {'title': title})
 
-    row = db_cursor.fetchone()[0]
+    row = db_cursor.fetchone()
 
     print "Title: {title}".format(title=row[0])
     print "Description: {description}".format(description=row[1])
@@ -155,6 +155,23 @@ def get_grades_by_title(title):
             acct=row[0], grade=row[1], title=title)
 
     return rows
+
+
+#Our unecessary function
+# def get_title_by_github(github):
+#     """get title by github"""
+
+#     QUERY = """
+#         SELECT project_title
+#         FROM grades
+#         WHERE github = :github
+#         """
+
+#     db_cursor = db.session.execute(QUERY, {'github': github})
+
+#     row = db_cursor.fetchone()
+
+
 
 
 def handle_input():
